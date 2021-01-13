@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- main css -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+
+    <!-- datatable css -->
+	 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+	 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+  	<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.bootstrap4.min.css">
+
+    <title>{{title}}</title>
+
+</head>
+
+  <body> 
+
+  	<div class="container">
+
+		<header class="header">
+			<nav>
+				<input id="nav-toggle" type="checkbox">
+				<div class="logo">KOLI<b>TOP</b></div>
+				<ul class="links">
+					<li><a href="/home">Estadísticas</a></li>
+					<li><a href="/ladder">Ladder</a></li>
+				</ul>
+				<label for="nav-toggle" class="icon-burger">
+					<div class="line"></div>
+					<div class="line"></div>
+					<div class="line"></div>
+				</label>
+			</nav>
+		</header>
+
+		<main class="contenido">
+			{% block content %}{% endblock %}
+		</main>
+
+		<footer class="footer">
+			<h4>KOLI<b>TOP</b></h4>
+      <p>Los datos y la mayoría de las imágenes son propiedad intelectual de <a href="https://www.ankama.com" class="button" style="color:red">Ankama</a>.</p>
+      <p>© 2021 KOLITOP.COM - Contacto: kolitopdofus@gmail.com - Desarrollado con <img src="../static/media/love.png" width="15px" height="15px"> por Ryouken <a href="https://www.youtube.com/Ryoukendofus"><img src="../static/media/youtube.png" width="20px" height="20px" ></a> </p>
+		</footer>
+		
+	</div>
+
+  <!-- JS CDN -->
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+  <!-- datatables js -->
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+	<script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
+	<script src="https://cdn.datatables.net/responsive/2.2.6/js/responsive.bootstrap4.min.js"></script>
+
+<!-- END JS CDN -->
+
+<!-- ----------------------- tables -------------------- -->
+<script type="text/javascript">
+  $(document).ready(function() {
+   var t = $('#est').DataTable({
+    responsive: true,
+    order: [[ 2, 'desc' ]],
+    paging: false,
+    searching: false,
+    info: false,
+
+    columnDefs : [
+    {searchable: false, orderable:false, targets: 0},
+    {targets: 1,
+      render: function(data) {
+        return '<img src="../static/media/'+data+'.png" width="35" height="35"><b style="padding-left:5px;">'+data+'</b>'
+      }
+    },
+    // colores
+    {targets: 2,
+                    render: function ( data, type, row ) {
+                      var color = 'white';
+                      if (data > 50) {
+                        color = '#00b020';
+                      }  
+                      if (data < 50) {
+                        color = 'red';
+                      }
+                      return '<b><span style="color:' + color + '">' + data + '</span></b>';
+                    }
+               },
+
+     {targets: 3, 
+                    render: function ( data, type, row ) {
+                      var color = 'white';
+                      if (data > 970) {
+                        color = '#00b020';
+                      }  
+                      if (data < 950) {
+                        color = 'red';
+                      }
+                      return '<b><span style="color:' + color + '">' + data + '</span></b>';
+                    }
+               }]
+
+
+
+    });
+   //indice
+    t.on( 'order.dt search.dt', function () {
+      t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+          cell.innerHTML = i+1;
+      } );
+  } ).draw();
+});
+
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+    var t = $('#ladder').DataTable( {
+  
+        columnDefs: [
+        { responsivePriority: 4, searchable: false, orderable: false, targets: 0 },
+        { orderable: false, targets: 1 },
+    	   { orderable: false, targets: 2 },
+    	   { orderable: false, targets: 3 },
+        { responsivePriority: 1, targets: 1 },
+        { responsivePriority: 2, targets: 2 },
+        { responsivePriority: 3, targets: 3 },
+        { responsivePriority: 5, targets: 4 },
+        { responsivePriority: 6, targets: 5 },
+        { responsivePriority: 7, targets: 6 },
+        { responsivePriority: 8, targets: 7 },
+
+        {targets: 5,
+                    render: function ( data, type, row ) {
+                      var color = 'white';
+                      if (data > 50) {
+                        color = '#00b020';
+                      }  
+                      if (data < 50) {
+                        color = 'red';
+                      }
+                      return '<b><span style="color:' + color + '">' + data + '</span></b>';
+                    }
+               },
+
+        {targets: 6,
+                    render: function ( data, type, row ) {
+                      var color = 'white';
+                      if (data > 1050) {
+                        color = '#00b020';
+                      }  
+                      if (data < 950) {
+                        color = 'red';
+                      }
+                      return '<b><span style="color:' + color + '">' + data + '</span></b>';
+                    }
+               },
+        {targets: 1,
+          render: function (data, type, row) {
+            var clase=row[3]
+            return '<img src="../static/media/'+clase+'.png" width="30" height="30"><span style="padding-left:5px;">'+data+'</span>';
+          }
+        }
+               ],
+
+		  responsive: true,
+    	lengthMenu:[[10,50,100],[10,50,100]],
+    	order: [[ 4, 'desc' ]],
+
+        initComplete: function () {
+            this.api().columns([2,3]).every( function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo( $(column.header()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
+    } );
+ 
+    t.on( 'order.dt search.dt', function () {
+        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+            cell.innerHTML = i+1;
+        } );
+    } ).draw();
+
+} );
+</script>
+
+<!-- --------------- End tables ---------------- -->
+
+<!-- ----------------- Graps -------------------- -->
+
+
+
+<!-- ------------- End graps ------------ -->
+  </body>
+
+</html>

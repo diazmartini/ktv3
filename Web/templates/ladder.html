@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block content %}
+	<table id="ladder" class="table table-striped table-bordered table-dark dt-responsive nowrap" style="width:100%">
+           <thead>
+        <tr>
+        	<th>#</th>
+            <th>Nombre</th>
+            <th>Servidor</th>
+            <th>Clase</th>
+            <th>Puntaje</th>
+            <th>% Winrate</th>
+            <th>Cota</th>
+            <th>Victorias</th>
+            <th>Derrotas</th>
+        </tr>
+    </thead>
+
+	<tbody>
+		{%for i in range(len)%} 
+		  
+		<!-- table rows -->
+		<tr> 
+			 <td></td>
+		    <td>{{table['Nombres'][i]}}</td> 
+		    <td>{{table['Servidores'][i]}}</td> 
+		    <td>{{table['Clases'][i]}}</td> 
+		    <td>{{table['Puntos'][i]}}</td>
+		    <td>{{table['% Winrate'][i]}}</td> 
+		    <td>{{table['Cotas'][i]}}</td> 
+		    <td>{{table['Ganados'][i]}}</td> 
+		    <td>{{table['Perdidos'][i]}}</td> 
+		    
+		{%endfor%} 
+		  
+		</tr>
+	</tbody>
+    </table>
+
+
+  	<p>Datos recolectados desde 8/12/2020</p>
+
+  <div>
+    <p>El ladder contempla solo personajes de nivel 199 y 200, con un mínimo de 10 combates.</p>
+  </div>
+
+  	<h2>¿Como se calcula el puntaje?</h2>
+  	<p>		Buscamos premiar o penalizar a los jugadores según su cota.</p>
+  	<p>     Cuanta mayor sea la cota del personaje en relación a la cota promedio de su respectiva clase, los puntos por victoria serán mayores, analogamente, las derrotas restaran más puntos.</p>
+  	<p>
+  		Luego, se calcula de la siguiente manera: </br>
+
+  		<ul>
+  		Si la cota del personaje es superior a la media: </br>
+  		
+  		<ul>
+  			<li><b style="color: #00b020">Victoria</b> = 100 puntos + premio</li> </br>
+  			<li><b style="color: red">Derrota</b> = -75 puntos -penalización</li> </br>
+  			<li><b style="color: #00b020">Premio</b> = (Cotapersonaje - Cotapromedio)²/100  |  (Notar que el cuadrado influye cada vez más si la cota es muy superior)</li> </br>
+  			<li><b style="color: red">Penalización</b> = premio/2</li> </br>
+  		</ul>
+
+  		Si la cota del personaje es inferior a la media: </br> 
+
+  		<ul>
+  			<li><b style="color: #00b020">Victoria</b> = 100 puntos</li> </br>
+  			<li><b style="color: red">Derrota</b> = -75 puntos</li> </br>
+  		</ul>
+  		</ul>
+  	</p>
+
+{% endblock content %}

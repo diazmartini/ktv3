@@ -1,0 +1,313 @@
+{% extends "layout.html" %}
+{% block content %}
+	<!-- home css -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='table.css') }}">
+
+     <!-- Chat.js css -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.css">
+
+	<table id="est" class="table table-striped table-bordered table-dark dt-responsive nowrap" style="width:100%">
+           <thead>
+        <tr>
+        	<th>#</th>
+            <th>Clase</th>
+            <th>% Winrate</th>
+            <th>Cota Promedio</th>
+            <th>Per. Activos</th>
+            <th>Peleas Totales</th>
+            <th>Victorias</th>
+            <th>Derrotas</th>
+        </tr>
+    </thead>
+
+	<tbody>
+		{%for i in range(15)%} 
+		  
+
+		<tr> 
+			<td></td>
+		    <td>{{table['Clase'][i]}}</td> 
+		    <td>{{table['% Winrate'][i]}}</td>
+		    <td>{{table['Cota Promedio'][i]}}</td> 
+		    <td>{{table['Per. Activos'][i]}}</td>
+		    <td>{{table['Total'][i]}}</td>
+		    <td>{{table['Victorias'][i]}}</td> 
+		    <td>{{table['Derrotas'][i]}}</td> 
+		    	  
+		{%endfor%} 
+		  
+		</tr>
+	</tbody>
+	<tfoot>
+        <tr>
+        	<th>#</th>
+            <th>Clase</th>
+            <th>% Winrate</th>
+            <th>Cota Promedio</th>
+            <th>Per. Activos</th>
+            <th>Peleas Totales</th>
+            <th>Victorias</th>
+            <th>Derrotas</th>
+        </tr>
+    </tfoot>
+
+   </table>
+
+
+<!--
+   <div>
+   	<button onclick="show_hide('activos')">Personajes Activos</button>
+     <button onclick="show_hide('winrates')">% Winrate | Cota Promedio</button>
+   </div>
+
+   <div>
+   		<canvas id="activos" width="100" height="100"></canvas>
+   </div>
+
+  <div>
+      <canvas id="winrates" width="100" height="100"></canvas>
+  </div>
+-->
+
+<!-- Chart.js js -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datasource"></script>
+
+  <!--<script src="https://raw.githack.com/leighquince/Chart.js/master/Chart.js"></script>-->
+
+
+<!-- Charts -->
+<!--
+<script type="text/javascript">
+  var a;
+function show_hide(chart)
+{
+
+  if(a==1)
+  {
+    document.getElementById(chart).style.display='inline';
+    return a=0;
+  }
+  else
+  {
+    document.getElementById(chart).style.display='none';
+    return a=1;
+  }
+}
+</script>
+
+<script>
+const ctx = document.getElementById('activos').getContext('2d');
+
+const clases = [
+{{activos['Clase'][0]|tojson}},
+{{activos['Clase'][1]|tojson}},
+{{activos['Clase'][2]|tojson}},
+{{activos['Clase'][3]|tojson}},
+{{activos['Clase'][4]|tojson}},
+{{activos['Clase'][5]|tojson}},
+{{activos['Clase'][6]|tojson}},
+{{activos['Clase'][7]|tojson}},
+{{activos['Clase'][8]|tojson}},
+{{activos['Clase'][9]|tojson}},
+{{activos['Clase'][10]|tojson}},
+{{activos['Clase'][11]|tojson}},
+{{activos['Clase'][12]|tojson}},
+{{activos['Clase'][13]|tojson}},
+{{activos['Clase'][14]|tojson}}
+];
+
+const datos = [
+{{activos['dato'][0]}},
+{{activos['dato'][1]}},
+{{activos['dato'][2]}},
+{{activos['dato'][3]}},
+{{activos['dato'][4]}},
+{{activos['dato'][5]}},
+{{activos['dato'][6]}},
+{{activos['dato'][7]}},
+{{activos['dato'][8]}},
+{{activos['dato'][9]}},
+{{activos['dato'][10]}},
+{{activos['dato'][11]}},
+{{activos['dato'][12]}},
+{{activos['dato'][13]}},
+{{activos['dato'][14]}}
+];
+
+Chart.defaults.global.defaultFontColor = 'white';
+Chart.defaults.global.defaultFontSize = 20;
+
+const myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: clases,
+        datasets: [{
+            label: 'Activos',
+            data: datos,
+            backgroundColor: [
+            'rgba(255, 0, 0, 0.5)',
+            'rgba(255, 85, 0, 0.5)',
+            'rgba(255, 170, 0, 0.5)',
+            'rgba(255, 255, 0, 0.5)',
+            'rgba(170, 255, 0, 0.5)',
+            'rgba(85, 255, 0, 0.5)',
+            'rgba(0, 255, 0, 0.5)',
+            'rgba(0, 255, 85, 0.5)',
+            'rgba(0, 255, 170, 0.5)',
+            'rgba(0, 255, 255, 0.5)',
+            'rgba(0, 170, 255, 0.5)',
+            'rgba(0, 85, 255, 0.5)',
+            'rgba(0, 0, 255, 0.5)',
+            'rgba(85, 0, 255, 0.5)',
+            'rgba(170, 0, 255, 0.5)'
+            ],
+            borderWidth: 1,
+            borderColor:'rgba(0, 0, 0, 0.5)'
+        }]
+    },
+    options: {
+
+      legend: {
+        display: false
+    },
+
+    
+
+      title: {
+        display: true,
+        text: 'Cantidad de personajes activos (Todos los servidores)'
+      }
+    }
+});
+</script>
+
+
+<script type="text/javascript">
+  const ctx3 = document.getElementById('winrates').getContext('2d');
+
+const clases2 = [
+{{winrates['Clase'][0]|tojson}},
+{{winrates['Clase'][1]|tojson}},
+{{winrates['Clase'][2]|tojson}},
+{{winrates['Clase'][3]|tojson}},
+{{winrates['Clase'][4]|tojson}},
+{{winrates['Clase'][5]|tojson}},
+{{winrates['Clase'][6]|tojson}},
+{{winrates['Clase'][7]|tojson}},
+{{winrates['Clase'][8]|tojson}},
+{{winrates['Clase'][9]|tojson}},
+{{winrates['Clase'][10]|tojson}},
+{{winrates['Clase'][11]|tojson}},
+{{winrates['Clase'][12]|tojson}},
+{{winrates['Clase'][13]|tojson}},
+{{winrates['Clase'][14]|tojson}}
+];
+
+const datos2 = [
+{{winrates['dato'][0]}},
+{{winrates['dato'][1]}},
+{{winrates['dato'][2]}},
+{{winrates['dato'][3]}},
+{{winrates['dato'][4]}},
+{{winrates['dato'][5]}},
+{{winrates['dato'][6]}},
+{{winrates['dato'][7]}},
+{{winrates['dato'][8]}},
+{{winrates['dato'][9]}},
+{{winrates['dato'][10]}},
+{{winrates['dato'][11]}},
+{{winrates['dato'][12]}},
+{{winrates['dato'][13]}},
+{{winrates['dato'][14]}}
+];
+
+const datos3 = [
+{{winrates['dato2'][0]}},
+{{winrates['dato2'][1]}},
+{{winrates['dato2'][2]}},
+{{winrates['dato2'][3]}},
+{{winrates['dato2'][4]}},
+{{winrates['dato2'][5]}},
+{{winrates['dato2'][6]}},
+{{winrates['dato2'][7]}},
+{{winrates['dato2'][8]}},
+{{winrates['dato2'][9]}},
+{{winrates['dato2'][10]}},
+{{winrates['dato2'][11]}},
+{{winrates['dato2'][12]}},
+{{winrates['dato2'][13]}},
+{{winrates['dato2'][14]}}
+];
+
+const color = [
+            'rgba(255, 0, 0, 0.5)',
+            'rgba(255, 85, 0, 0.5)',
+            'rgba(255, 170, 0, 0.5)',
+            'rgba(255, 255, 0, 0.5)',
+            'rgba(170, 255, 0, 0.5)',
+            'rgba(85, 255, 0, 0.5)',
+            'rgba(0, 255, 0, 0.5)',
+            'rgba(0, 255, 85, 0.5)',
+            'rgba(0, 255, 170, 0.5)',
+            'rgba(0, 255, 255, 0.5)',
+            'rgba(0, 170, 255, 0.5)',
+            'rgba(0, 85, 255, 0.5)',
+            'rgba(0, 0, 255, 0.5)',
+            'rgba(85, 0, 255, 0.5)',
+            'rgba(170, 0, 255, 0.5)'
+            ];
+
+Chart.defaults.global.defaultFontColor = 'white';
+Chart.defaults.global.defaultFontSize = 20;
+
+  var mixedChart = new Chart(ctx3, {
+    type: 'bar',
+    data: {
+        datasets: [{
+            label: '% Winrate',
+            data: datos2,
+            backgroundColor: color,
+            borderColor: 'rgba(0,0,0,0.5)',
+            borderWidth: 2.5,
+            hoverBorderWidth: 5,
+
+            // this dataset is drawn below
+            order: 1
+        }, {
+            label: 'Cota Promedio/10',
+            data: datos3,
+            type: 'line',
+            // this dataset is drawn on top
+            order: 2,
+            backgroundColor:'rgba(0,0,0,0)',
+            pointHitRadius: 15,
+            pointBorderWidth: 1,
+            pointBackgroundColor: 'rgba(0,0,0,0.5)',
+            pointHitRadius: 2,
+            pointBorderColor: color,
+            pointRadius: 7.5,
+            pointHoverRadius: 15
+
+        }],
+        labels: clases2
+    },
+    options: {
+      title: {
+        display: true,
+        text: '% Winrate | Cota Promedio (leyenda interactiva)'
+      }
+    }
+});
+</script>
+
+-->
+
+
+{% endblock content %}
